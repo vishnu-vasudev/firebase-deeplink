@@ -6,6 +6,7 @@ import Home from './components/Home';
 import NewPage from './components/NewPage';
 import LinkingScreens from './components/LinkingScreens';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import RemotePushController from './android/app/src/services/RemotePushController';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,24 +26,24 @@ const MyStack = () => {
       console.log(param);
     }
   }
-  // useEffect(() => {
-  //   setData(param);
-  // }, [param]);
 
-  // function setData(param) {
-  //   let Item = [];
-  //   let singleObject = {};
-  //   if (param !== '') {
-  //     param.map(index => {
-  //       // setSingleObj(singleObj => {order: index});
-  //       singleObject = {order: index};
-  //       // setItems(items => [...items, singleObject]);
-  //       Item.push(singleObject);
-  //       console.log(index);
-  //     });
-  //     alert(JSON.stringify(Item));
-  //   }
-  // }
+  useEffect(() => {
+    setData(param);
+  }, [param]);
+
+  function setData(param) {
+    let Item = [];
+    let singleObject = {};
+    if (param !== '') {
+      param.map(index => {
+        // setSingleObj(singleObj => {order: index});
+        singleObject = {order: index};
+        // setItems(items => [...items, singleObject]);
+        Item.push(singleObject);
+      });
+      alert(JSON.stringify(Item));
+    }
+  }
 
   // useEffect(() => {
   //   setData(param);
@@ -132,21 +133,6 @@ const useInitialURL = () => {
 };
 
 const App = () => {
-  // useEffect(() => {
-  //   dynamicLinks()
-  //     .getInitialLink()
-  //     .then(link => {
-  //       handleDynamicLink(link);
-  //     });
-  //   const linkingListener = dynamicLinks().onLink(handleDynamicLink);
-  //   return () => {
-  //     linkingListener();
-  //   };
-  // }, []);
-
-  // const handleDynamicLink = link => {
-  //   console.log(link);
-  // };
   const linking = {
     prefixes: ['https://chattybao.page.link', 'deeplink://'],
     config: {
@@ -158,9 +144,12 @@ const App = () => {
   };
 
   return (
-    <NavigationContainer linking={linking}>
-      <MyStack />
-    </NavigationContainer>
+    <>
+      <RemotePushController />
+      <NavigationContainer linking={linking}>
+        <MyStack />
+      </NavigationContainer>
+    </>
   );
 };
 
